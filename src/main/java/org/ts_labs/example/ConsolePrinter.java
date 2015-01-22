@@ -24,7 +24,9 @@ public class ConsolePrinter {
     private static ResourceBundle localization =
             ResourceBundle.getBundle("localization",Locale.getDefault());
 
-    private ConsolePrinter() {}
+    private ConsolePrinter() {
+
+    }
 
      public static void error(int type){
         LOGGER.error(String.format(ERROR_TEXT_FORMAT,
@@ -72,7 +74,6 @@ public class ConsolePrinter {
             sb.append(localization.getString(dir));
         }
         sb.append("\n").append(LINE);
-
         Iterator<?> iterator = dirContents.iterator();
         while(iterator.hasNext()){
             if (receivedStringPathValidated){
@@ -86,7 +87,6 @@ public class ConsolePrinter {
                 sb.append(String.format("%3d. %-35s\n",
                         dirContents.indexOf(dirName)+1,dirName.replace('.',' ')));
             }
-
         }
         sb.append(LINE);
         if (receivedStringPathValidated) {
