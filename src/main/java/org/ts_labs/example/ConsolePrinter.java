@@ -20,7 +20,7 @@ public class ConsolePrinter {
     private static final String ERROR_TEXT_FORMAT = "\n\u001B[31m       %s\u001B[0m\n";
     private static final Logger LOGGER =
             Logger.getLogger(FileSystemNavigator.class);
-    private static ResourceBundle  localization =
+    private static ResourceBundle localization =
             ResourceBundle.getBundle("localization",Locale.getDefault());
 
     private ConsolePrinter() {}
