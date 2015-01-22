@@ -19,7 +19,8 @@ public class FileSystemNavigator {
     private static Map<String, ArrayList<FileRecord>> recentDirs =
             new HashMap<String, ArrayList<FileRecord>>();
 
-    public FileSystemNavigator() {}
+    public FileSystemNavigator() {
+    }
 
     public enum Commands { /**/
         QUIT("quit"),
