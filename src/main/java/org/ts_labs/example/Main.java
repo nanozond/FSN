@@ -10,18 +10,22 @@ public class Main {
 
     public static void main(String[] args) {
 
-        FileSystemNavigator fileSystemNavigator = new FileSystemNavigator();
+        FileSystemNavigator fsn = new FileSystemNavigator();
 
         switch (args.length){
             case 3:
                 Localization.setLocalization(new String[] {args[1], args[2]});
-                fileSystemNavigator.readAndPrintFolderContent(args[0]);
+                fsn.readAndPrintFolderContent(args[0]);
+                break;
+            case 1:
+                Localization.setLocalization(new String[]{});
+                fsn.readAndPrintFolderContent(args[0]);
                 break;
             default:
                 Localization.setLocalization(new String[]{});
-                fileSystemNavigator.readAndPrintFolderContent(".");
+                fsn.readAndPrintFolderContent(".");
         }
 
-        fileSystemNavigator.waitForInput();
+        fsn.waitForInput();
     }
 }
