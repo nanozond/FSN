@@ -8,7 +8,8 @@ import java.util.*;
  */
 public class Localization {
 
-    private static final String ERROR_TEXT_FORMAT = "\n\u001B[31m       %s\u001B[0m\n";
+    public static final String ERROR_TEXT_FORMAT = "\n\u001B[31m       " +
+            "%s\u001B[0m\n";
     private static ResourceBundle localization;
     private static Localization loc = new Localization();
 
@@ -25,7 +26,6 @@ public class Localization {
         NUM_RECENT("newRecent", MessageTypes.INFO),
         QUIT("quit", MessageTypes.INFO),
         CH_DIR("cd", MessageTypes.INFO),
-        ARG_ERROR("errorArg", MessageTypes.ERROR),
         PATH_ERROR("errorPath", MessageTypes.ERROR),
         EXCEPTION("", MessageTypes.ERROR_E);
 
@@ -49,6 +49,7 @@ public class Localization {
         public String toString() {
             return localization.getString(name);
         }
+
         public static Messages getValue(String name) throws
                 IllegalArgumentException{
             for (Messages message : values()){
@@ -58,7 +59,6 @@ public class Localization {
             }
             throw new IllegalArgumentException("Incorrect command name! ");
         }
-
     }
 
     private Localization() {

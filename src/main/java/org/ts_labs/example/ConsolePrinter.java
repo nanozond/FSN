@@ -30,7 +30,8 @@ public class ConsolePrinter {
 
     public static void print(Localization.Messages enumMessage){
         sb.delete(0, sb.length());
-        sb.append(loc.getText(enumMessage));
+        sb.append(String.format(Localization.ERROR_TEXT_FORMAT,
+                loc.getText(enumMessage)));
         printHelp(sb);
         log.info(sb);
     }
@@ -39,7 +40,8 @@ public class ConsolePrinter {
         sb.delete(0, sb.length());
         sb.append("\n\n");
         printHelp(sb);
-        log.info(e.getLocalizedMessage() + sb);
+        log.info(String.format(Localization.ERROR_TEXT_FORMAT,
+                e.getLocalizedMessage() + sb));
     }
 
     public static void printListContent(String dir,
