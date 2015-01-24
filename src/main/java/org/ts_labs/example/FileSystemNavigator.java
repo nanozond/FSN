@@ -15,16 +15,16 @@ import static org.ts_labs.example.Localization.Messages.*;
  *  @author         Sergey Tatarinov
  *  @version        1.06 17.01.15.
  */
-public class FileSystemNavigator {
+public class FileSystemNavigator{
 
     private static Map<String, ArrayList<FileRecord>> recentDirs =
             new HashMap<String, ArrayList<FileRecord>>();
 
-    public FileSystemNavigator() {
+    public FileSystemNavigator(){
 
     }
 
-    public void readAndPrintFolderContent(String currentDir) {
+    public void readAndPrintFolderContent(String currentDir){
 
         if (!Utils.validatePath(currentDir)) {
             ConsolePrinter.print(PATH_ERROR);
