@@ -7,8 +7,8 @@ import java.io.File;
 /**
  *  File system navigator core class
  *
- *  @version        1.03 17.01.15.
- *  @author         Nano Zond
+ *  @author         Sergey Tatarinov
+ *  @version        1.04 17.01.15.
  */
 public class FileRecord{
 
@@ -46,7 +46,6 @@ public class FileRecord{
     public String toString() {
         return name;
     }
-
 
     public String getFullName() {
         return fullName;

@@ -4,14 +4,13 @@ import org.ts_labs.example.model.FileRecord;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  *  File system navigator core class
  *
+ *  @author         Sergey Tatarinov
  *  @version        1.04 17.01.15.
- *  @author         Nano Zond
  */
 public class Utils {
 
@@ -46,13 +45,13 @@ public class Utils {
     }
 
     public static String[] preparePath(String[] args) {
-        int argsLen = args.length-1;
-        if (args[argsLen].charAt(args[argsLen].length()-1)!='\\'){
-            args[argsLen]=args[argsLen]+"\\";
+        int argsLen = args.length - 1;
+        if (args[argsLen].charAt(args[argsLen].length() - 1) != '\\'){
+            args[argsLen] = args[argsLen] + "\\";
         }
         String[] argsNew = new String[argsLen];
         for (int i = 1; i < args.length; i++) {
-            argsNew[i-1]=args[i];
+            argsNew[i - 1] = args[i];
         }
         return argsNew;
     }
@@ -74,7 +73,6 @@ public class Utils {
             }
         }catch (NullPointerException e){
             System.err.println(e);
-
         }
         return size;
     }

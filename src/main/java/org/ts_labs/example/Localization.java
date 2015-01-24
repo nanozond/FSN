@@ -4,20 +4,27 @@ import java.util.*;
 
 /**
  * @author Sergey Tatarinov
- * @version 1.01 23.01.15
+ * @version 1.02 23.01.15
  */
 public class Localization {
 
     private static final String ERROR_TEXT_FORMAT = "\n\u001B[31m       %s\u001B[0m\n";
     private static ResourceBundle localization;
+    private static Localization loc = new Localization();
 
-    enum MessageTypes{ INFO, ERROR, ERROR_E, WARN }
+    enum MessageTypes{ INFO, ERROR, ERROR_E }
 
     public enum Messages{
         DIRS("dirs", MessageTypes.INFO),
         FILES("files", MessageTypes.INFO),
         TOTAL("total", MessageTypes.INFO),
-        RECENT("rDirs", MessageTypes.INFO),
+        RECENT("recent", MessageTypes.INFO),
+        R_DIRS("rDirs", MessageTypes.INFO),
+        NEW_COM("newCommand", MessageTypes.INFO),
+        HELP("help", MessageTypes.INFO),
+        NUM_RECENT("newRecent", MessageTypes.INFO),
+        QUIT("quit", MessageTypes.INFO),
+        CH_DIR("cd", MessageTypes.INFO),
         ARG_ERROR("errorArg", MessageTypes.ERROR),
         PATH_ERROR("errorPath", MessageTypes.ERROR),
         EXCEPTION("", MessageTypes.ERROR_E);
@@ -34,17 +41,62 @@ public class Localization {
             return type;
         }
 
+        public String getName() {
+            return name;
+        }
+
         @Override
         public String toString() {
             return localization.getString(name);
         }
+        public static Messages getValue(String name) throws
+                IllegalArgumentException{
+            for (Messages message : values()){
+                if (name.toLowerCase().equals(message.getName())){
+                    return message;
+                }
+            }
+            throw new IllegalArgumentException("Incorrect command name! ");
+        }
+
     }
 
     private Localization() {
-
+        setLocalization(new String[] {"en","US"});
     }
 
-    public static void setLocalizationProperties(String[] args){
+    public static String getText(Object ... args){
+        Messages locMessage;
+        Exception e = new Exception();
+        switch(args.length){
+            case 0:
+                locMessage = Messages.EXCEPTION;
+                e = new IllegalArgumentException();
+                break;
+            case 1:
+                locMessage = (Messages) args[0];
+                break;
+            default:
+                e = (Exception) args[1];
+                locMessage = Messages.EXCEPTION;
+        }
+        switch (locMessage.getType()){
+            case INFO:
+                return locMessage.toString();
+            case ERROR:
+                return String.format(ERROR_TEXT_FORMAT, locMessage.toString());
+            case ERROR_E:
+                return String.format(ERROR_TEXT_FORMAT, e);
+            default:
+                return locMessage.toString();
+        }
+    }
+
+    public static Localization getLocalization() {
+        return loc;
+    }
+
+    public static void setLocalization(String [] args ) {
         String language;
         String country;
         Locale currentLocale;
@@ -58,19 +110,5 @@ public class Localization {
         }
         currentLocale = new Locale(language, country);
         localization = ResourceBundle.getBundle("localization", currentLocale);
-    }
-
-    public static String toString(Messages locMessage, Exception e){
-        switch (locMessage.getType()){
-            case INFO:
-                return localization.getString(locMessage.toString());
-            case ERROR:
-                return String.format(ERROR_TEXT_FORMAT,
-                        localization.getString(locMessage.toString()));
-            case ERROR_E:
-                return String.format(ERROR_TEXT_FORMAT, e);
-            default:
-                return localization.getString(locMessage.toString());
-        }
     }
 }

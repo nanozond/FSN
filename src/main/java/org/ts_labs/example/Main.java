@@ -3,8 +3,8 @@ package org.ts_labs.example;
 /**
  *  Starting class
  *
- *  @version        1.03 17.01.15.
- *  @author         Nano Zond
+ *  @author         Sergey Tatarinov
+ *  @version        1.04 17.01.15.
  */
 public class Main {
 
@@ -12,7 +12,15 @@ public class Main {
 
         FileSystemNavigator fileSystemNavigator = new FileSystemNavigator();
 
-        fileSystemNavigator.readAndPrintFolderContent(args);
+        switch (args.length){
+            case 3:
+                Localization.setLocalization(new String[] {args[1], args[2]});
+                fileSystemNavigator.readAndPrintFolderContent(args[0]);
+                break;
+            default:
+                Localization.setLocalization(new String[]{});
+                fileSystemNavigator.readAndPrintFolderContent(".");
+        }
 
         fileSystemNavigator.waitForInput();
     }

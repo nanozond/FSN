@@ -1,89 +1,65 @@
 package org.ts_labs.example;
 
-import org.ts_labs.example.model.FileRecord;
-import org.ts_labs.example.model.FolderRecord;
+import org.ts_labs.example.model.*;
 
 import java.io.File;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import static org.ts_labs.example.Localization.Messages;
+import static org.ts_labs.example.Localization.Messages.*;
+
 /**
  *  File system navigator core class
  *
- *  @version        1.05 17.01.15.
- *  @author         Nano Zond
+ *  @author         Sergey Tatarinov
+ *  @version        1.06 17.01.15.
  */
 public class FileSystemNavigator {
-
 
     private static Map<String, ArrayList<FileRecord>> recentDirs =
             new HashMap<String, ArrayList<FileRecord>>();
 
     public FileSystemNavigator() {
+
     }
 
-    public enum Commands { /**/
-        QUIT("quit"),
-        CHANGE_DIRECTORY("cd"),
-        VIEW_RECENT("recent");
+    public void readAndPrintFolderContent(String currentDir) {
 
-        private String name;
-
-        Commands(String name){
-            this.name = name;
+        if (!Utils.validatePath(currentDir)) {
+            ConsolePrinter.print(PATH_ERROR);
         }
-
-        public static String getName(Commands commands) {
-            return commands.name;
-        }
-
-        public static Commands getValue(String name) throws
-                IllegalArgumentException{
-            for (Commands commands : values()){
-                if (name.toLowerCase().equals(getName(commands))){
-                    return commands;
-                }
-            }
-            throw new IllegalArgumentException("Incorrect command name! ");
-        }
-    }
-
-    public void readAndPrintFolderContent(String[] currentDir) {
-        if (currentDir.length > 1){
-            ConsolePrinter.error(0);    //argumentError type
-        }
-        String path = (currentDir.length == 0) ? "." : currentDir[0];
-        if (!Utils.validatePath(path)) {
-            ConsolePrinter.error(1);    //validationError type
-        }
-
-        storeDirContent(path);
+        storeDirContent(currentDir);
         List<?> list = recentDirs.get(
-                new File(path).getAbsolutePath());
-        ConsolePrinter.printListContent(path, list);
+                new File(currentDir).getAbsolutePath());
+        ConsolePrinter.printListContent(currentDir, list);
 
     }
 
     public void waitForInput(){
-        Commands command;
+        Messages message;
         Scanner in = new Scanner(System.in);
+
         try{
             if (in.hasNext()) {
                 in.skip(Pattern.compile(" *"));
                 String[] commandString = in.nextLine().split(" ");
-                command = Commands.getValue(commandString[0]);
-                switch (command) {
+                message = Messages.getValue(commandString[0]);
+                switch (message) {
                     case QUIT:
                         System.exit(0);
                         break;
-                    case CHANGE_DIRECTORY:
+                    case CH_DIR:
                         Main.main(Utils.preparePath(commandString));
                         break;
-                    case VIEW_RECENT:
+                    case RECENT:
                         List<String> recentDirsList = new ArrayList<String>();
                         recentDirsList.addAll(recentDirs.keySet());
-                        ConsolePrinter.printListContent("recentDir", recentDirsList);
+                        ConsolePrinter.printListContent(null, recentDirsList);
                         waitForInputRecentDirNumber(recentDirsList);
+                        break;
+                    case HELP:
+                        ConsolePrinter.print(HELP);
                     default:
                         break;
                 }
@@ -115,6 +91,7 @@ public class FileSystemNavigator {
 
     private void storeDirContent(String currentDir){
         ArrayList<FileRecord> fileRecords = new ArrayList<FileRecord>();
+
         try{
             for (File record : new File(currentDir).listFiles()) {
                 fileRecords.add((record.isFile())
@@ -124,7 +101,6 @@ public class FileSystemNavigator {
         }catch (SecurityException e){
             ConsolePrinter.exception(e);
         }
-
         Collections.sort(fileRecords, new Comparator<FileRecord>() {
 
             @Override
