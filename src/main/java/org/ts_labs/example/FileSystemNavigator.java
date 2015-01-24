@@ -118,7 +118,4 @@ public class FileSystemNavigator {
         });
         recentDirs.put(new File(currentDir).getAbsolutePath(), fileRecords);
     }
-
-
-
 }
