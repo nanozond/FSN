@@ -8,8 +8,7 @@ import java.util.*;
  */
 public class Localization {
 
-    public static final String ERROR_TEXT_FORMAT = "\n\u001B[31m       " +
-            "%s\u001B[0m\n";
+    public static final String ERROR_TEXT_FORMAT = "\n\u001B[31m       %s\u001B[0m\n";
     private static ResourceBundle localization;
     private static Localization loc = new Localization();
 
