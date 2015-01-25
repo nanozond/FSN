@@ -57,7 +57,7 @@ public class ConsolePrinter {
                     fileRecord.getType().toString(), fileRecord.getSize()));
         }
         sb.append(LINE);
-        sb.append(String.format("%s %d, %d %s & %d %s\n", loc.toString(WORD_TOTAL), dirContents.size(),
+        sb.append(String.format("%s %d, %d %s & %d %s", loc.toString(WORD_TOTAL), dirContents.size(),
                     Utils.countFolders(dirContents), loc.toString(WORD_FOLDERS),
                     Utils.countFiles(dirContents), loc.toString(WORD_FILES)));
         sb.append(LINE).append(loc.toString(NEW_COM)).append("\n");
