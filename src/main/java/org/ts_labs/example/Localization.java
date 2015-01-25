@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * @author Sergey Tatarinov
- * @version 1.02 23.01.15
+ * @version 1.04 23.01.15
  */
 public class Localization {
 
