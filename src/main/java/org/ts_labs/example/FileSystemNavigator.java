@@ -78,18 +78,14 @@ public class FileSystemNavigator{
 
     public void waitForInputRecentDirNumber(List<String> recentDirsList){
         Scanner in = new Scanner(System.in);
-        try {
-            if (in.hasNextInt()) {
-                int recentDirNumber = in.nextInt();
-                if (recentDirNumber > recentDirsList.size() ||
-                        recentDirNumber < 0){
-                    throw new IllegalArgumentException();
-                }
-                String key = recentDirsList.get(recentDirNumber - 1);
-                ConsolePrinter.printListContent(key, recentDirs.get(key));
+        if (in.hasNextInt()) {
+            int recentDirNumber = in.nextInt();
+            if (recentDirNumber > recentDirsList.size() ||
+                    recentDirNumber < 0){
+                throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException e){
-            ConsolePrinter.exception(e);
+            String key = recentDirsList.get(recentDirNumber - 1);
+            ConsolePrinter.printListContent(key, recentDirs.get(key));
         }
     }
 
