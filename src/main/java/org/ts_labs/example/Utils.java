@@ -1,10 +1,11 @@
 package org.ts_labs.example;
 
+import org.ts_labs.example.FileSystemNavigator.FileType;
 import org.ts_labs.example.model.FileRecord;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *  File system navigator core class
@@ -16,28 +17,22 @@ public class Utils {
 
     private Utils(){}
 
-    public static boolean validatePath(String path){
-        return Files.exists((new File(path).toPath()).toAbsolutePath());
-    }
-
-    public static int countFolders(List<?> filesAndFolders){
+    public static int countFolders(List<FileRecord> filesAndFolders){
         int count = 0;
-        Iterator<?> iterator = filesAndFolders.iterator();
+        Iterator<FileRecord> iterator = filesAndFolders.iterator();
         while(iterator.hasNext()){
-            FileRecord folderRecord = (FileRecord)iterator.next();
-            if (!folderRecord.isFile()) {
+            if (iterator.next().getType() == FileType.FILE) {
                 count++;
             }
         }
         return count;
     }
 
-    public static int countFiles(List<?>  filesAndFolders){
+    public static int countFiles(List<FileRecord>  filesAndFolders){
         int count = 0;
-        Iterator<?> iterator = filesAndFolders.iterator();
+        Iterator<FileRecord> iterator = filesAndFolders.iterator();
         while(iterator.hasNext()){
-            FileRecord folderRecord = (FileRecord)iterator.next();
-            if (folderRecord.isFile()) {
+            if (iterator.next().getType() == FileType.DIR) {
                 count++;
             }
         }
@@ -72,7 +67,7 @@ public class Utils {
                 }
             }
         }catch (NullPointerException e){
-            System.err.println(e);
+            ConsolePrinter.exception(e);
         }
         return size;
     }

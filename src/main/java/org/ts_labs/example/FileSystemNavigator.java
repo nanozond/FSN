@@ -3,6 +3,7 @@ package org.ts_labs.example;
 import org.ts_labs.example.model.*;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -17,30 +18,32 @@ import static org.ts_labs.example.Localization.Messages.*;
  */
 public class FileSystemNavigator{
 
-    private static Map<String, ArrayList<FileRecord>> recentDirs =
-            new HashMap<String, ArrayList<FileRecord>>();
+    private static final String DEFAULT_PATH = ".";
+    private static Map<String, ArrayList<FileRecord>> recentDirs = new HashMap<String,
+            ArrayList<FileRecord>>();
+
+    public enum FileType{
+        FILE, DIR
+    }
 
     public FileSystemNavigator(){
 
     }
 
-    public void readAndPrintFolderContent(String currentDir){
-
-        if (!Utils.validatePath(currentDir)) {
-            ConsolePrinter.print(PATH_ERROR);
+    public void readAndPrintDirContent(String currentDirPath){
+        File currentDir = new File(currentDirPath != null ? currentDirPath : DEFAULT_PATH);
+        if (!Files.exists(currentDir.toPath()) || !currentDir.isDirectory()){
+            ConsolePrinter.exception(new IllegalArgumentException());
         }
-        storeDirContent(currentDir);
-        List<?> list = recentDirs.get(
-                new File(currentDir).getAbsolutePath());
-        ConsolePrinter.printListContent(currentDir, list);
-
+        List<FileRecord> listFiles = storeDirContent(currentDir, currentDir.listFiles());
+        ConsolePrinter.printListContent(currentDir.getAbsolutePath(), listFiles);
     }
 
     public void waitForInput(){
         Messages message;
         Scanner in = new Scanner(System.in);
 
-        try{
+        try {
             if (in.hasNext()) {
                 in.skip(Pattern.compile(" *"));
                 String[] commandString = in.nextLine().split(" ");
@@ -49,13 +52,13 @@ public class FileSystemNavigator{
                     case QUIT:
                         System.exit(0);
                         break;
-                    case CH_DIR:
+                    case CD:
                         Main.main(Utils.preparePath(commandString));
                         break;
                     case RECENT:
                         List<String> recentDirsList = new ArrayList<String>();
                         recentDirsList.addAll(recentDirs.keySet());
-                        ConsolePrinter.printListContent(null, recentDirsList);
+                        ConsolePrinter.printRecentDirs(recentDirsList);
                         waitForInputRecentDirNumber(recentDirsList);
                         break;
                     case HELP:
@@ -64,17 +67,16 @@ public class FileSystemNavigator{
                         break;
                 }
             }
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             ConsolePrinter.exception(e);
-        }finally {
+        } finally {
             waitForInput();
         }
     }
 
-    public static void waitForInputRecentDirNumber(List<String> recentDirsList){
-
+    public void waitForInputRecentDirNumber(List<String> recentDirsList){
         Scanner in = new Scanner(System.in);
-        try{
+        try {
             if (in.hasNextInt()) {
                 int recentDirNumber = in.nextInt();
                 if (recentDirNumber > recentDirsList.size() ||
@@ -84,38 +86,37 @@ public class FileSystemNavigator{
                 String key = recentDirsList.get(recentDirNumber - 1);
                 ConsolePrinter.printListContent(key, recentDirs.get(key));
             }
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e){
             ConsolePrinter.exception(e);
         }
     }
 
-    private void storeDirContent(String currentDir){
+    private List<FileRecord> storeDirContent(File currentDir,File[] listFiles){
         ArrayList<FileRecord> fileRecords = new ArrayList<FileRecord>();
 
-        try{
-            for (File record : new File(currentDir).listFiles()) {
-                fileRecords.add((record.isFile())
-                        ? new FileRecord(record)
-                        : new FolderRecord(record));
+        try {
+            for (File file : listFiles) {
+                fileRecords.add((file.isFile())
+                        ? new FileRecord(file.getName(), Utils.getFileSize(file))
+                        : new FolderRecord (file.getName(), Utils.getFileSize(file)));
             }
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             ConsolePrinter.exception(e);
         }
         Collections.sort(fileRecords, new Comparator<FileRecord>() {
 
             @Override
             public int compare(FileRecord first, FileRecord second) {
-                if (first.getClass().getSimpleName().equals("FolderRecord") &&
-                        second.getClass().getSimpleName().equals("FileRecord")) {
+                if (first.getType() == FileType.DIR && second.getType() == FileType.FILE){
                     return - 1;
-                } else if (first.getClass().getSimpleName().equals("FileRecord") &&
-                        second.getClass().getSimpleName().equals("FolderRecord")) {
+                } else if (first.getType() == FileType.FILE && second.getType() == FileType.DIR) {
                     return 1;
                 } else {
                     return (first.getName().compareToIgnoreCase(second.getName()));
                 }
             }
         });
-        recentDirs.put(new File(currentDir).getAbsolutePath(), fileRecords);
+        recentDirs.put(currentDir.getAbsolutePath(), fileRecords);
+        return fileRecords;
     }
 }

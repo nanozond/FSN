@@ -7,25 +7,9 @@ package org.ts_labs.example;
  *  @version        1.04 17.01.15.
  */
 public class Main {
-
     public static void main(String[] args) {
-
         FileSystemNavigator fsn = new FileSystemNavigator();
-
-        switch (args.length){
-            case 3:
-                Localization.setLocalization(new String[] {args[1], args[2]});
-                fsn.readAndPrintFolderContent(args[0]);
-                break;
-            case 1:
-                Localization.setLocalization(new String[]{});
-                fsn.readAndPrintFolderContent(args[0]);
-                break;
-            default:
-                Localization.setLocalization(new String[]{});
-                fsn.readAndPrintFolderContent(".");
-        }
-
+        fsn.readAndPrintDirContent((args.length > 0) ? args[0] : null);
         fsn.waitForInput();
     }
 }

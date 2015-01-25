@@ -1,28 +1,20 @@
 package org.ts_labs.example.model;
 
-import java.io.File;
+import org.ts_labs.example.FileSystemNavigator.FileType;
 
 /**
  *  File system navigator core class
  *
- *  @version        1.03 17.01.15.
- *  @author         Nano Zond
+ *  @version        1.04 17.01.15.
+ *  @author         Sergey Tatarinov
  */
 public class FolderRecord extends FileRecord {
 
-    private String Type;
-
-
-    public FolderRecord(File file){
-        super(file);
-        setType("<DIR>");
+    public FolderRecord(String name, long size){
+        super(name, size);
     }
 
-    public String getType() {
-        return Type;
-    }
-
-    public void setType(String type) {
-        Type = type;
+    public FileType getType() {
+        return FileType.DIR;
     }
 }

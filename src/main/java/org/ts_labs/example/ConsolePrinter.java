@@ -2,7 +2,6 @@ package org.ts_labs.example;
 
 import org.apache.log4j.Logger;
 import org.ts_labs.example.model.FileRecord;
-import org.ts_labs.example.model.FolderRecord;
 
 import java.io.File;
 import java.util.*;
@@ -19,8 +18,10 @@ public class ConsolePrinter {
 
     private static final String LINE =
             "──────────────────────────────────────────────────\n";
-    private static Logger log = Logger.getLogger(FileSystemNavigator.class);
-    private static Localization loc = Localization.getLocalization();
+    public static final String ERROR_TEXT_FORMAT = "\n\u001B[31m       %s\u001B[0m\n";
+    private static Logger log = Logger.getLogger("user");
+    private static Logger logI = Logger.getLogger("errorLog");
+    private static Localization loc = Localization.getInstance();
     private static StringBuilder sb = new StringBuilder();
 
 
@@ -30,9 +31,10 @@ public class ConsolePrinter {
 
     public static void print(Localization.Messages enumMessage){
         sb.delete(0, sb.length());
-        sb.append(String.format(Localization.ERROR_TEXT_FORMAT,
-                loc.getText(enumMessage)));
+        sb.append(String.format(ERROR_TEXT_FORMAT,
+                loc.toString(enumMessage)));
         printHelp(sb);
+        logI.error(sb);
         log.info(sb);
     }
 
@@ -40,55 +42,48 @@ public class ConsolePrinter {
         sb.delete(0, sb.length());
         sb.append("\n\n");
         printHelp(sb);
-        log.info(String.format(Localization.ERROR_TEXT_FORMAT,
+        logI.error(String.format(ERROR_TEXT_FORMAT,
                 e.getLocalizedMessage() + sb));
     }
 
-    public static void printListContent(String dir,
-                                        List<?> dirContents){
-
-        boolean receivedStringPathValidated = false;
-
+    public static void printListContent(String dir, List<FileRecord> dirContents){
+        sb.delete(0,sb.length());
         sb.append(LINE);
-        if(dir != null){
-            sb.append(new File(dir).getAbsolutePath());
-            receivedStringPathValidated = true;
-        } else {
-            sb.append(loc.getText(R_DIRS));
-        }
+        sb.append(new File(dir).getAbsolutePath());
         sb.append("\n").append(LINE);
-        Iterator<?> iterator = dirContents.iterator();
+        Iterator<FileRecord> iterator = dirContents.iterator();
         while(iterator.hasNext()){
-            if (receivedStringPathValidated){
-                FileRecord folder = (FileRecord)iterator.next();
-                sb.append(String.format("%-35s%5s %15d bytes\n", folder.getName(),
-                        (folder.isFile() ? "" : ((FolderRecord) folder).getType()),
-                        folder.getSize()));
-
-            } else {
-                String dirName = (String) iterator.next();
-                sb.append(String.format("%3d. %-35s\n",
-                        dirContents.indexOf(dirName) + 1,
-                        dirName.replace('.',' ')));
-            }
+            FileRecord fileRecord = iterator.next();
+            sb.append(String.format("%-35s<%5s> %15d bytes\n", fileRecord.getName(),
+                    fileRecord.getType().toString(), fileRecord.getSize()));
         }
         sb.append(LINE);
-        if (receivedStringPathValidated) {
-            sb.append(String.format("%s %d, %d %s & %d %s\n",
-                    loc.getText(TOTAL), dirContents.size(),
-                    Utils.countFolders(dirContents), loc.getText(DIRS),
-                    Utils.countFiles(dirContents), loc.getText(FILES)));
-            sb.append(LINE).append(loc.getText(NEW_COM)).append("\n");
-        } else {
-            sb.append(loc.getText(NUM_RECENT));
-        }
+        sb.append(String.format("%s %d, %d %s & %d %s\n", loc.toString(WORD_TOTAL), dirContents.size(),
+                    Utils.countFolders(dirContents), loc.toString(WORD_FOLDERS),
+                    Utils.countFiles(dirContents), loc.toString(WORD_FILES)));
+        sb.append(LINE).append(loc.toString(NEW_COM)).append("\n");
         log.info(sb);
     }
 
-     public static StringBuilder printHelp(StringBuilder sb) {
-         sb.append(String.format("\n%s\n%s\n%s\n", loc.getText(QUIT),
-                 loc.getText(CH_DIR), loc.getText(RECENT)));
+    public static void printRecentDirs(List<String> recentDirs) {
+        ArrayList<String> rDirs = new ArrayList<String>();
+        rDirs.addAll(recentDirs);
+        sb.delete(0, sb.length());
+        sb.append(LINE).append(loc.toString(R_DIRS)).append("\n").append(LINE);
+        for (String recentDir : rDirs){
+            sb.append(String.format("%3d. %-35s\n", rDirs.indexOf(recentDir)+1, recentDir.replace
+                    ('.', ' ')));
+        }
+        sb.append(LINE).append(loc.toString(NUM_RECENT)).append("\n");
+        log.info(sb);
+    }
+
+    public static StringBuilder printHelp(StringBuilder sb) {
+        sb.append(String.format("\n%s\n%s\n%s\n", loc.toString(QUIT),
+                loc.toString(CD), loc.toString(RECENT)));
         return sb;
-     }
+    }
+
+
 
 }

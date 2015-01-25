@@ -1,38 +1,29 @@
 package org.ts_labs.example.model;
 
-import org.ts_labs.example.Utils;
-
-import java.io.File;
+import org.ts_labs.example.FileSystemNavigator.FileType;
 
 /**
  *  File system navigator core class
  *
  *  @author         Sergey Tatarinov
- *  @version        1.04 17.01.15.
+ *  @version        1.05 17.01.15.
  */
 public class FileRecord{
 
     private String name;
     private long size;
-    private String fullName;
 
-    public FileRecord(File file){
-        setFullName(file.getAbsolutePath());
-        setName(file.getName());
-        setSize(Utils.getFileSize(file));
+    public FileRecord(String name, Long size){
+        this.name = name;
+        this.size = size;
     }
 
-
-    public boolean isFile(){
-        return new File(getFullName()).isFile();
+    public FileType getType(){
+        return FileType.FILE;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public long getSize() {
@@ -47,11 +38,4 @@ public class FileRecord{
         return name;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 }
