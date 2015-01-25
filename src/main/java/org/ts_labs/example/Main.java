@@ -7,8 +7,9 @@ package org.ts_labs.example;
  *  @version        1.04 17.01.15.
  */
 public class Main {
+    private static FileSystemNavigator fsn = new FileSystemNavigator();
+
     public static void main(String[] args) {
-        FileSystemNavigator fsn = new FileSystemNavigator();
         fsn.readAndPrintDirContent((args.length > 0) ? args[0] : null);
         fsn.waitForInput();
     }
