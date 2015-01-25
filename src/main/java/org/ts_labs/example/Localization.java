@@ -12,8 +12,8 @@ public class Localization {
     private static Localization loc;
 
     public enum Messages{
-        WORD_FOLDERS, WORD_FILES, WORD_TOTAL, RECENT, R_DIRS, NEW_COM,
-        HELP, NUM_RECENT, QUIT, CD, PATH_ERROR, EXCEPTION;
+        WORD_FOLDERS, WORD_FILES, WORD_TOTAL, RECENT, R_DIRS, NEW_COM, HELP, NUM_RECENT, QUIT,
+        CD, PATH_ERROR;
 
         public static Messages getValue(String name) throws
                 IllegalArgumentException{
@@ -23,7 +23,6 @@ public class Localization {
                 }
             }
             throw new IllegalArgumentException("    Illegal command!");
-
         }
     }
 
