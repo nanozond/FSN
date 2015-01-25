@@ -19,6 +19,7 @@ import static org.ts_labs.example.Localization.Messages.*;
 public class FileSystemNavigator{
 
     private static final String DEFAULT_PATH = ".";
+    private static final String ILLEGAL_PATH_EXECEPTION = "Illegal path!";
     private static Map<String, ArrayList<FileRecord>> recentDirs = new HashMap<String,
             ArrayList<FileRecord>>();
 
@@ -33,7 +34,7 @@ public class FileSystemNavigator{
     public void readAndPrintDirContent(String currentDirPath){
         File currentDir = new File(currentDirPath != null ? currentDirPath : DEFAULT_PATH);
         if (!Files.exists(currentDir.toPath()) || !currentDir.isDirectory()){
-            ConsolePrinter.exception(new IllegalArgumentException());
+            ConsolePrinter.exception(new IllegalArgumentException(ILLEGAL_PATH_EXECEPTION));
         }
         List<FileRecord> listFiles = storeDirContent(currentDir, currentDir.listFiles());
         ConsolePrinter.printListContent(currentDir.getAbsolutePath(), listFiles);
