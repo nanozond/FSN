@@ -58,11 +58,13 @@ public class Utils {
                 size = fileOrFolder.length();
             } else {
                 File[] subFiles = fileOrFolder.listFiles();
-                for (File file : subFiles) {
-                    if (file.isFile()) {
-                        size += file.length();
-                    } else {
-                        size += getFileSize(file);
+                if (subFiles != null){
+                    for (File file : subFiles) {
+                        if (file.isFile()) {
+                            size += file.length();
+                        } else {
+                            size += getFileSize(file);
+                        }
                     }
                 }
             }

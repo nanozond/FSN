@@ -17,10 +17,11 @@ import static org.ts_labs.example.Localization.Messages.*;
 public class ConsolePrinter {
 
     private static final String LINE =
-            "──────────────────────────────────────────────────\n";
-    public static final String ERROR_TEXT_FORMAT = "\n\u001B[31m       %s\u001B[0m\n";
+            "\n──────────────────────────────────────────────────\n";
+    public static final String ERROR_TEXT_FORMAT_START = "\n\u001B[31m";
+    public static final String ERROR_TEXT_FORMAT_STOP = "\u001B[0m\n";
     private static Logger log = Logger.getLogger("user");
-    private static Logger logI = Logger.getLogger("errorLog");
+    private static Logger logError = Logger.getLogger("errorLog");
     private static Localization loc = Localization.getInstance();
     private static StringBuilder sb = new StringBuilder();
 
@@ -31,26 +32,25 @@ public class ConsolePrinter {
 
     public static void print(Localization.Messages enumMessage){
         sb.delete(0, sb.length());
-        sb.append(String.format(ERROR_TEXT_FORMAT,
-                loc.toString(enumMessage)));
+        sb.append(loc.toString(enumMessage));
         printHelp(sb);
-        logI.error(sb);
         log.info(sb);
     }
 
     public static void exception(Exception e){
         sb.delete(0, sb.length());
-        sb.append("\n\n");
+        sb.append("\n");
+        sb.append(ERROR_TEXT_FORMAT_START).append(e.getMessage());
         printHelp(sb);
-        logI.error(String.format(ERROR_TEXT_FORMAT,
-                e.getLocalizedMessage() + sb));
+        log.info(sb.append(ERROR_TEXT_FORMAT_STOP));
+        logError.error("", e);
     }
 
     public static void printListContent(String dir, List<FileRecord> dirContents){
         sb.delete(0,sb.length());
         sb.append(LINE);
         sb.append(new File(dir).getAbsolutePath());
-        sb.append("\n").append(LINE);
+        sb.append(LINE);
         Iterator<FileRecord> iterator = dirContents.iterator();
         while(iterator.hasNext()){
             FileRecord fileRecord = iterator.next();

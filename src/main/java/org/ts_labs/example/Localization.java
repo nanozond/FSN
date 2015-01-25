@@ -22,7 +22,8 @@ public class Localization {
                     return message;
                 }
             }
-            throw new IllegalArgumentException("Incorrect command name! ");
+            throw new IllegalArgumentException("    Illegal command!");
+
         }
     }
 

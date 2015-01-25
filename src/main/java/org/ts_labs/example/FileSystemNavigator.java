@@ -63,8 +63,9 @@ public class FileSystemNavigator{
                         break;
                     case HELP:
                         ConsolePrinter.print(HELP);
-                    default:
                         break;
+                    default:
+                        throw new IllegalArgumentException();
                 }
             }
         } catch (IllegalArgumentException e) {
