@@ -19,7 +19,7 @@ public class ConsolePrinter {
     private static final String LINE =
             "\n──────────────────────────────────────────────────\n";
     public static final String ERROR_TEXT_FORMAT_START = "\n\u001B[31m";
-    public static final String ERROR_TEXT_FORMAT_STOP = "\u001B[0m\n";
+    public static final String ERROR_TEXT_FORMAT_STOP = "\u001B[0m";
     private static Logger log = Logger.getLogger("user");
     private static Logger logError = Logger.getLogger("errorLog");
     private static Localization loc = Localization.getInstance();
@@ -39,7 +39,6 @@ public class ConsolePrinter {
 
     public static void exception(Exception e){
         sb.delete(0, sb.length());
-        sb.append("\n");
         sb.append(ERROR_TEXT_FORMAT_START).append(e.getMessage());
         printHelp(sb);
         log.info(sb.append(ERROR_TEXT_FORMAT_STOP));
