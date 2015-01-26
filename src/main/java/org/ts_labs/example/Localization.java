@@ -3,36 +3,39 @@ package org.ts_labs.example;
 import java.util.*;
 
 /**
+ *
  * @author Sergey Tatarinov
  * @version 1.04 23.01.15
  */
 public class Localization {
 
-    private static ResourceBundle localization;
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("localization", Locale.getDefault());
     private static Localization loc;
 
-    public enum Messages{
-        WORD_FOLDERS, WORD_FILES, WORD_TOTAL, RECENT, R_DIRS, NEW_COM, HELP, NUM_RECENT, QUIT,
-        CD, PATH_ERROR;
-
-        public static Messages getValue(String name) throws
-                IllegalArgumentException{
-            for (Messages message : values()){
-                if (name.toLowerCase().equals(message.name().toLowerCase())){
-                    return message;
-                }
-            }
-            throw new IllegalArgumentException("    Illegal command!");
-        }
+    public enum Messages {
+        CD,
+        HELLO,
+        HELP,
+        LS,
+        NEW_COM,
+        NUM_RECENT,
+        PATH_ERROR,
+        QUIT,
+        R_DIRS,
+        REC,
+        WORD_FOLDERS,
+        WORD_FILES,
+        WORD_TOTAL,
+        UNKNOWN_COM,
+        NO_RECENT
     }
 
     private Localization() {
-        Locale currentLocale = Locale.getDefault();
-        localization = ResourceBundle.getBundle("localization", currentLocale);
+
     }
 
-    public static String toString(Messages message){
-        return localization.getString(message.name());
+    public String getString(Messages message){
+        return resourceBundle.getString(message.name());
     }
 
     public static Localization getInstance() {

@@ -3,7 +3,6 @@ package org.ts_labs.example.model;
 import org.ts_labs.example.FileSystemNavigator.FileType;
 
 /**
- *  File system navigator core class
  *
  *  @version        1.04 17.01.15.
  *  @author         Sergey Tatarinov

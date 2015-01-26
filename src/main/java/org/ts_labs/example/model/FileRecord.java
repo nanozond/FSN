@@ -3,7 +3,6 @@ package org.ts_labs.example.model;
 import org.ts_labs.example.FileSystemNavigator.FileType;
 
 /**
- *  File system navigator core class
  *
  *  @author         Sergey Tatarinov
  *  @version        1.05 17.01.15.
@@ -28,10 +27,6 @@ public class FileRecord{
 
     public long getSize() {
         return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
     }
 
     public String toString() {
