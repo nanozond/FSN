@@ -1,12 +1,12 @@
 package org.ts_labs.example;
 
 import org.apache.log4j.Logger;
+import org.ts_labs.example.FileSystemNavigator.FileType;
 import org.ts_labs.example.model.FileRecord;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ts_labs.example.FileSystemNavigator.FileType.FILE;
 import static org.ts_labs.example.Localization.Messages.*;
 
 /**
@@ -16,14 +16,22 @@ import static org.ts_labs.example.Localization.Messages.*;
  */
 public class ConsolePrinter {
 
-    private static final String LINE =
-            "\n──────────────────────────────────────────────────\n";
+    private static final char lineSymbol = '\u2500';
     public static final String ERROR_TEXT_FORMAT = "\u001B[31m    %s\u001B[0m";
     public static final String POS_CURS = "\u001B[%dC";
     private static final Logger LOG = Logger.getLogger("user");
 
     private ConsolePrinter() {
 
+    }
+
+    public static String printLine(){
+        StringBuilder line = new StringBuilder();
+        line.append('\n');
+        for (int i = 0; i < 60; i++) {
+            line.append(lineSymbol);
+        }
+        return line.append('\n').toString();
     }
 
     public static void print(Localization.Messages enumMessage){
@@ -46,6 +54,8 @@ public class ConsolePrinter {
         sb.append(currentDir).append("> ");
         sb.append(String.format(POS_CURS, currentDir.length() + 1));
         LOG.info(sb);
+        /*CursorBlinking cursorBlinking = new CursorBlinking(sb.toString());
+        cursorBlinking.start();*/
     }
 
     public static void exception(Exception e){
@@ -61,11 +71,11 @@ public class ConsolePrinter {
         int filesCount = 0;
         int dirsCount = 0;
 
-        sb.append(LINE);
+        sb.append(printLine());
         sb.append(dirPath);
-        sb.append(LINE);
+        sb.append(printLine());
         for (FileRecord fileRecord : fileList) {
-            if (fileRecord.getType() == FILE) {
+            if (fileRecord.getType() == FileType.FILE) {
                 filesCount++;
             } else {
                 dirsCount++;
@@ -73,11 +83,11 @@ public class ConsolePrinter {
             sb.append(String.format("%-35s<%5s> %15d bytes\n", fileRecord.getName(),
                     fileRecord.getType(), fileRecord.getSize()));
         }
-        sb.append(LINE);
+        sb.append(printLine());
         sb.append(String.format("%s %d, %d %s & %d %s", Localization.getInstance().getString(WORD_TOTAL),
                 fileList.size(), dirsCount, Localization.getInstance().getString(WORD_FOLDERS),
                 filesCount, Localization.getInstance().getString(WORD_FILES)));
-        sb.append(LINE).append(Localization.getInstance().getString(NEW_COM)).append("\n");
+        sb.append(printLine()).append(Localization.getInstance().getString(NEW_COM)).append("\n");
         LOG.info(sb);
     }
 
@@ -86,12 +96,12 @@ public class ConsolePrinter {
         StringBuilder sb = new StringBuilder();
 
         rDirs.addAll(recentDirs);
-        sb.append(LINE).append(Localization.getInstance().getString(R_DIRS)).append(LINE);
+        sb.append(printLine()).append(Localization.getInstance().getString(R_DIRS)).append(printLine());
         for (String recentDir : rDirs){
             sb.append(String.format("%3d. %-35s\n", rDirs.indexOf(recentDir)+1, recentDir.replace
                     ('.', ' ')));
         }
-        sb.append(LINE).append(Localization.getInstance().getString(NUM_RECENT)).append("\n>");
+        sb.append(printLine()).append(Localization.getInstance().getString(NUM_RECENT)).append("\n>");
         LOG.info(sb);
     }
 
