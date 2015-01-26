@@ -18,11 +18,9 @@ public class ConsolePrinter {
 
     private static final String LINE =
             "\n──────────────────────────────────────────────────\n";
-    public static final String ERROR_TEXT_FORMAT_START = "\n\u001B[31m";
-    public static final String ERROR_TEXT_FORMAT_STOP = "\u001B[0m";
-    public static final String POS_CURS = "\u001B[";
+    public static final String ERROR_TEXT_FORMAT = "\u001B[31m    %s\u001B[0m";
+    public static final String POS_CURS = "\u001B[%dC";
     private static final Logger LOG = Logger.getLogger("user");
-    /*private static final Logger logError = Logger.getLogger("errorLog");*/
 
     private ConsolePrinter() {
 
@@ -38,23 +36,24 @@ public class ConsolePrinter {
     public static void printError(Localization.Messages enumMessage){
         StringBuilder sb = new StringBuilder();
 
-        sb.append(ERROR_TEXT_FORMAT_START);
-        sb.append(Localization.getInstance().getString(enumMessage));
-        LOG.error(sb.append(ERROR_TEXT_FORMAT_STOP));
+        sb.append(String.format(ERROR_TEXT_FORMAT,
+                Localization.getInstance().getString(enumMessage)));
+        LOG.error(sb);
     }
 
     public static void printCurDir(String currentDir){
         StringBuilder sb = new StringBuilder();
-        sb.append(currentDir).append('>');
-        sb.append(POS_CURS).append(currentDir.length()).append("C");
+        sb.append(currentDir).append("> ");
+        sb.append(String.format(POS_CURS, currentDir.length() + 2));
         LOG.info(sb);
     }
 
     public static void exception(Exception e){
         StringBuilder sb = new StringBuilder();
-        sb.append(ERROR_TEXT_FORMAT_START).append(e.getMessage());
+        sb.append(String.format(ERROR_TEXT_FORMAT, e.getMessage()));
+        LOG.error(e);
         printHelp();
-        LOG.error(sb.append(ERROR_TEXT_FORMAT_STOP), e);
+
     }
 
     public static void printDirContent(String dirPath, List<FileRecord> fileList){
@@ -87,8 +86,7 @@ public class ConsolePrinter {
         StringBuilder sb = new StringBuilder();
 
         rDirs.addAll(recentDirs);
-        sb.append(LINE).append(Localization.getInstance().getString(R_DIRS)).append("\n").append
-                (LINE);
+        sb.append(LINE).append(Localization.getInstance().getString(R_DIRS)).append(LINE);
         for (String recentDir : rDirs){
             sb.append(String.format("%3d. %-35s\n", rDirs.indexOf(recentDir)+1, recentDir.replace
                     ('.', ' ')));

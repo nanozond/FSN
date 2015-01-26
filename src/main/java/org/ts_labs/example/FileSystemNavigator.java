@@ -19,12 +19,13 @@ import static org.ts_labs.example.Localization.Messages.*;
 public class FileSystemNavigator{
 
     private static final String APPLICATION_PATH = ".";
-    private  Map<String, List<FileRecord>> recentDirs = new HashMap<String,
-            List<FileRecord>>();
+    private static final String PARENT_DIR = "..";
+    private  Map<String, List<FileRecord>> recentDirs = new TreeMap<String, List<FileRecord>>();
     private String currentDir = new File(APPLICATION_PATH).getAbsolutePath();
 
     public enum FileType{
-        FILE, DIR
+        FILE,
+        DIR
     }
 
     public enum Commands{
@@ -47,16 +48,20 @@ public class FileSystemNavigator{
 
     public FileSystemNavigator(){
         ConsolePrinter.print(HELLO);
-        ConsolePrinter.print(NEW_COM);
         ConsolePrinter.printCurDir(currentDir);
     }
 
     public void changeDirectory(String newPath){
         Path path;
-        try {
-            path = Paths.get(currentDir, newPath);
-        } catch (InvalidPathException e) {
-           path = Paths.get(newPath);
+
+        if (newPath.equals(PARENT_DIR)){
+            path = Paths.get(currentDir).getParent();
+        } else {
+            try {
+                path = Paths.get(currentDir, newPath);
+            } catch (InvalidPathException e) {
+                path = Paths.get(newPath);
+            }
         }
 
         if (Files.exists(path)){
@@ -66,7 +71,7 @@ public class FileSystemNavigator{
             if (Files.exists(path)){
                 currentDir = path.toAbsolutePath().toString();
             } else {
-                ConsolePrinter.print(PATH_ERROR);
+                ConsolePrinter.printError(PATH_ERROR);
                 return;
             }
         }
@@ -112,7 +117,7 @@ public class FileSystemNavigator{
                         break;
                 }
             } else {
-                ConsolePrinter.print(UNKNOWN_COM);
+                ConsolePrinter.printError(UNKNOWN_COM);
             }
         }
         ConsolePrinter.printCurDir(currentDir);
