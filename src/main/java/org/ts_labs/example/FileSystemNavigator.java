@@ -49,6 +49,7 @@ public class FileSystemNavigator{
     public FileSystemNavigator(){
         ConsolePrinter.print(HELLO);
         ConsolePrinter.printCurDir(currentDir);
+        storeDirContent();
     }
 
     public void changeDirectory(String newPath){

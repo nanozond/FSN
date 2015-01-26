@@ -44,7 +44,7 @@ public class ConsolePrinter {
     public static void printCurDir(String currentDir){
         StringBuilder sb = new StringBuilder();
         sb.append(currentDir).append("> ");
-        sb.append(String.format(POS_CURS, currentDir.length() + 2));
+        sb.append(String.format(POS_CURS, currentDir.length() + 1));
         LOG.info(sb);
     }
 
