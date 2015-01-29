@@ -54,7 +54,6 @@ public class ConsolePrinter {
         sb.append(currentDir).append("> ");
         sb.append(String.format(POS_CURS, currentDir.length() + 1));
         LOG.info(sb);
-
     }
 
     public static void exception(Exception e){
@@ -114,7 +113,5 @@ public class ConsolePrinter {
                 Localization.getInstance().getString(QUIT)));
         LOG.info(sb);
     }
-
-
 
 }
