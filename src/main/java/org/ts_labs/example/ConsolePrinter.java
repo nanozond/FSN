@@ -54,8 +54,7 @@ public class ConsolePrinter {
         sb.append(currentDir).append("> ");
         sb.append(String.format(POS_CURS, currentDir.length() + 1));
         LOG.info(sb);
-        /*CursorBlinking cursorBlinking = new CursorBlinking(sb.toString());
-        cursorBlinking.start();*/
+
     }
 
     public static void exception(Exception e){
