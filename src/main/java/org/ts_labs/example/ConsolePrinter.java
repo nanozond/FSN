@@ -16,9 +16,9 @@ import static org.ts_labs.example.Localization.Messages.*;
  */
 public class ConsolePrinter {
 
-    private static final char lineSymbol = '\u2500';
     public static final String ERROR_TEXT_FORMAT = "\u001B[31m    %s\u001B[0m";
-    public static final String POS_CURS = "\u001B[%dC";
+
+    private static final char LINE_SYMBOL = '\u2500';
     private static final Logger LOG = Logger.getLogger("user");
 
     private ConsolePrinter() {
@@ -29,7 +29,7 @@ public class ConsolePrinter {
         StringBuilder line = new StringBuilder();
         line.append('\n');
         for (int i = 0; i < 60; i++) {
-            line.append(lineSymbol);
+            line.append(LINE_SYMBOL);
         }
         return line.append('\n').toString();
     }
@@ -51,8 +51,8 @@ public class ConsolePrinter {
 
     public static void printCurDir(String currentDir){
         StringBuilder sb = new StringBuilder();
+
         sb.append(currentDir).append("> ");
-        sb.append(String.format(POS_CURS, currentDir.length() + 1));
         LOG.info(sb);
     }
 

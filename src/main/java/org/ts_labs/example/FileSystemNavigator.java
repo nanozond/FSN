@@ -8,7 +8,6 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static org.ts_labs.example.Localization.Messages.*;
 
 /**
  *  File system navigator core class
@@ -18,10 +17,10 @@ import static org.ts_labs.example.Localization.Messages.*;
  */
 public class FileSystemNavigator{
 
-    private static final String APPLICATION_PATH = ".";
+    private static final String APPLICATION_PATH = "";
     private static final String PARENT_DIR = "..";
     private  Map<String, List<FileRecord>> recentDirs = new TreeMap<String, List<FileRecord>>();
-    private String currentDir = new File(APPLICATION_PATH).getAbsolutePath();
+    private String currentDir;
 
     public enum FileType{
         FILE,
@@ -47,7 +46,12 @@ public class FileSystemNavigator{
     }
 
     public FileSystemNavigator(){
-        ConsolePrinter.print(HELLO);
+
+    }
+
+    public void readAndPrintDirContent(){
+        currentDir = new File(APPLICATION_PATH).getAbsolutePath();
+
         storeDirContent();
     }
 
@@ -71,7 +75,7 @@ public class FileSystemNavigator{
             if (Files.exists(path)){
                 currentDir = path.toAbsolutePath().toString();
             } else {
-                ConsolePrinter.printError(PATH_ERROR);
+                ConsolePrinter.printError(Localization.Messages.PATH_ERROR);
                 return;
             }
         }
@@ -105,7 +109,7 @@ public class FileSystemNavigator{
                     case REC:
                         List<String> recentDirsList = new ArrayList<String>();
                         if (recentDirs.size() == 0){
-                            ConsolePrinter.printError(NO_RECENT);
+                            ConsolePrinter.printError(Localization.Messages.NO_RECENT);
                             break;
                         }
                         recentDirsList.addAll(recentDirs.keySet());
@@ -119,7 +123,7 @@ public class FileSystemNavigator{
                         break;
                 }
             } else {
-                ConsolePrinter.printError(UNKNOWN_COM);
+                ConsolePrinter.printError(Localization.Messages.UNKNOWN_COM);
             }
         }
         waitForInput();
