@@ -27,6 +27,7 @@ public class FileSystemNavigator{
         DIR
     }
 
+
     public enum Commands{
         CD,
         HELP,
@@ -66,15 +67,17 @@ public class FileSystemNavigator{
                 path = Paths.get(newPath);
             }
         }
-        if (Files.exists(path)){
-            currentDir = path.toAbsolutePath().toString();
-        } else {
-            path = Paths.get(newPath);
+        if (path != null){
             if (Files.exists(path)){
                 currentDir = path.toAbsolutePath().toString();
             } else {
-                ConsolePrinter.printError(Localization.Messages.PATH_ERROR);
-                return;
+                path = Paths.get(newPath);
+                if (Files.exists(path)){
+                    currentDir = path.toAbsolutePath().toString();
+                } else {
+                    ConsolePrinter.printError(Localization.Messages.PATH_ERROR);
+                    return;
+                }
             }
         }
     }

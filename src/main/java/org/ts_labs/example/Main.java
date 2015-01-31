@@ -14,7 +14,6 @@ public class Main {
         if(args.length > 0){
             fsn.changeDirectory(args[0]);
         }
-        //sn.readAndPrintDirContent();
         fsn.waitForInput();
     }
 }
