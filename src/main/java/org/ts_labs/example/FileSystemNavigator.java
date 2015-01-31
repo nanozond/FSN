@@ -140,7 +140,7 @@ public class FileSystemNavigator{
             }
             String key = recentDirsList.get(recentDirNumber - 1);
             ConsolePrinter.printDirContent(key, recentDirs.get(key));
-            ConsolePrinter.printCurDir(currentDir);
+            //ConsolePrinter.printCurDir(currentDir);
         }
     }
 
