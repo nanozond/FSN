@@ -11,7 +11,10 @@ public class Main {
     public static void main(String[] args) {
         ConsolePrinter.print(Localization.Messages.HELLO);
         FileSystemNavigator fsn = new FileSystemNavigator();
-        fsn.readAndPrintDirContent();
+        if(args.length > 0){
+            fsn.changeDirectory(args[0]);
+        }
+        //sn.readAndPrintDirContent();
         fsn.waitForInput();
     }
 }

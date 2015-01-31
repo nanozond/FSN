@@ -50,9 +50,8 @@ public class FileSystemNavigator{
     }
 
     public void readAndPrintDirContent(){
-        currentDir = new File(APPLICATION_PATH).getAbsolutePath();
-
         storeDirContent();
+        ConsolePrinter.printDirContent(currentDir, recentDirs.get(currentDir));
     }
 
     public void changeDirectory(String newPath){
@@ -67,7 +66,6 @@ public class FileSystemNavigator{
                 path = Paths.get(newPath);
             }
         }
-
         if (Files.exists(path)){
             currentDir = path.toAbsolutePath().toString();
         } else {
@@ -79,13 +77,13 @@ public class FileSystemNavigator{
                 return;
             }
         }
-        storeDirContent();
     }
 
     public void waitForInput(){
         Commands commands;
         Scanner in = new Scanner(System.in);
 
+        ConsolePrinter.printCurDir(currentDir);
         if (in.hasNext()) {
             in.skip(Pattern.compile(" *"));
             String[] commandString = in.nextLine().split(" ");
@@ -100,11 +98,9 @@ public class FileSystemNavigator{
                         break;
                     case HELP:
                         ConsolePrinter.printHelp();
-                        ConsolePrinter.printCurDir(currentDir);
                         break;
                     case LS:
-                        ConsolePrinter.printDirContent(currentDir, recentDirs.get(currentDir));
-                        ConsolePrinter.printCurDir(currentDir);
+                        readAndPrintDirContent();
                         break;
                     case REC:
                         List<String> recentDirsList = new ArrayList<String>();
@@ -170,6 +166,6 @@ public class FileSystemNavigator{
             }
         });
         recentDirs.put(currentDir, fileList);
-        ConsolePrinter.printCurDir(currentDir);
+//        ConsolePrinter.printCurDir(currentDir);
     }
 }
