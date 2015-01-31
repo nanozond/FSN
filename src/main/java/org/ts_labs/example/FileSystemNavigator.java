@@ -80,16 +80,17 @@ public class FileSystemNavigator{
     }
 
     public void waitForInput(){
-        Commands commands;
+        Commands command;
         Scanner in = new Scanner(System.in);
 
         ConsolePrinter.printCurDir(currentDir);
         if (in.hasNext()) {
+            //ConsolePrinter.printCurDir(currentDir);
             in.skip(Pattern.compile(" *"));
             String[] commandString = in.nextLine().split(" ");
-            commands = Commands.getValue(commandString[0]);
-            if (commands != null) {
-                switch (commands) {
+            command = Commands.getValue(commandString[0]);
+            if (command != null) {
+                switch (command) {
                     case CD:
                         if (commandString.length < 2) {
                             break;
@@ -121,8 +122,9 @@ public class FileSystemNavigator{
             } else {
                 ConsolePrinter.printError(Localization.Messages.UNKNOWN_COM);
             }
+            waitForInput();
         }
-        waitForInput();
+
     }
 
     public void waitForInputRecentDirNumber(List<String> recentDirsList){
