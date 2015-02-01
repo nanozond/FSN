@@ -19,7 +19,7 @@ public class ConsolePrinter {
     public static final String ERROR_TEXT_FORMAT = "\u001B[31m    %s\u001B[0m";
 
     private static final char LINE_SYMBOL = '\u2500';
-    private static final Logger LOG = Logger.getLogger("user");
+    private static final Logger LOG = Logger.getLogger(ConsolePrinter.class);
 
     private ConsolePrinter() {
 
