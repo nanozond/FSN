@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         ConsolePrinter.print(Localization.Messages.HELLO);
         FileSystemNavigator fsn = new FileSystemNavigator();
+
         fsn.waitForInput();
     }
 }
