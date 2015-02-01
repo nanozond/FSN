@@ -19,6 +19,7 @@ public class FileSystemNavigator{
 
     private static final String APPLICATION_PATH = "";
     private static final String PARENT_DIR = "..";
+
     private  Map<String, List<FileRecord>> recentDirs = new TreeMap<String, List<FileRecord>>();
     private String currentDir;
 
