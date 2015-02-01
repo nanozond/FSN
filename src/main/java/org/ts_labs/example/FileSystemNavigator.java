@@ -56,8 +56,8 @@ public class FileSystemNavigator{
     }
 
     public void readAndPrintDirContent(){
-        storeDirContent();
-        ConsolePrinter.printDirContent(currentDir, recentDirs.get(currentDir));
+        List<FileRecord> fileList = storeDirContent(new File(currentDir).listFiles());
+        ConsolePrinter.printDirContent(currentDir, fileList);
     }
 
     public void changeDirectory(String newPath){
@@ -148,11 +148,10 @@ public class FileSystemNavigator{
         }
     }
 
-    private void storeDirContent(){
+    private List<FileRecord> storeDirContent(File[] files){
         List<FileRecord> fileList = new ArrayList<FileRecord>();
 
-        File currentFile = new File(currentDir);
-        for (File file : currentFile.listFiles()) {
+        for (File file : files) {
             try {
                 fileList.add((file.isFile())
                         ? new FileRecord(file.getName(), file.length())
@@ -175,6 +174,6 @@ public class FileSystemNavigator{
             }
         });
         recentDirs.put(currentDir, fileList);
-//        ConsolePrinter.printCurDir(currentDir);
+        return fileList;
     }
 }
