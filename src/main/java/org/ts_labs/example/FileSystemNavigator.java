@@ -27,7 +27,6 @@ public class FileSystemNavigator{
         DIR
     }
 
-
     public enum Commands{
         CD,
         HELP,
