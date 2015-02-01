@@ -46,7 +46,7 @@ public class FileSystemNavigator{
     }
 
     public FileSystemNavigator(){
-        currentDir = new File(PARENT_DIR).getAbsolutePath();
+        currentDir = new File(APPLICATION_PATH).getAbsolutePath();
     }
 
     public void readAndPrintDirContent(){
