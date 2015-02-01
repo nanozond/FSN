@@ -11,9 +11,6 @@ public class Main {
     public static void main(String[] args) {
         ConsolePrinter.print(Localization.Messages.HELLO);
         FileSystemNavigator fsn = new FileSystemNavigator();
-        if(args.length > 0){
-            fsn.changeDirectory(args[0]);
-        }
         fsn.waitForInput();
     }
 }
