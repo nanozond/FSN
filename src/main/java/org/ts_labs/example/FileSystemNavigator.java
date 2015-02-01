@@ -47,7 +47,12 @@ public class FileSystemNavigator{
     }
 
     public FileSystemNavigator(){
-        currentDir = new File(APPLICATION_PATH).getAbsolutePath();
+        try {
+            currentDir = new File(APPLICATION_PATH).getAbsolutePath();
+        } catch (SecurityException e) {
+            ConsolePrinter.exception(e);
+        }
+
     }
 
     public void readAndPrintDirContent(){
@@ -88,7 +93,6 @@ public class FileSystemNavigator{
 
         ConsolePrinter.printCurDir(currentDir);
         if (in.hasNext()) {
-            //ConsolePrinter.printCurDir(currentDir);
             in.skip(Pattern.compile(" *"));
             String[] commandString = in.nextLine().split(" ");
             command = Commands.getValue(commandString[0]);
@@ -107,11 +111,11 @@ public class FileSystemNavigator{
                         readAndPrintDirContent();
                         break;
                     case REC:
-                        List<String> recentDirsList = new ArrayList<String>();
-                        if (recentDirs.size() == 0){
+                        if (recentDirs.size() == 0) {
                             ConsolePrinter.printError(Localization.Messages.NO_RECENT);
                             break;
                         }
+                        List<String> recentDirsList = new ArrayList<String>();
                         recentDirsList.addAll(recentDirs.keySet());
                         ConsolePrinter.printRecentDirs(recentDirsList);
                         waitForInputRecentDirNumber(recentDirsList);
